@@ -7,36 +7,39 @@
   <link rel="icon" type="image/png" href="images/sliceanimatedream6verynice.png">
   <link rel="shortcut icon" type="image/png" href="images/sliceanimatedream6verynice.png">
   <style>
-    :root {
-      color-scheme: light;
+    .work-panel {
+      display: grid;
+      grid-template-columns: repeat(12, max-content);
+      gap: 0.6rem;
+      align-content: start;
+      justify-content: center;
+      justify-items: center;
+      width: min(100%, 2200px);
+      max-width: 2200px;
+      padding-right: 2rem;
+      margin: 0 auto;
+      transform: none;
     }
 
-    * {
-      box-sizing: border-box;
+    .work-box {
+      width: 160px;
+      max-width: 160px;
+      aspect-ratio: 1 / 1;
+      border-radius: 8px;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.08);
+      background-clip: padding-box;
+      padding: 0;
+      cursor: pointer;
+      transition: max-width 240ms cubic-bezier(.2,.9,.2,1), box-shadow 200ms ease, transform 200ms ease;
+      will-change: max-width, transform;
     }
 
-    body {
-      margin: 0;
-      min-height: 100vh;
-      overflow: hidden;
-      background-color: #f2f2f2;
-      color: #000000;
-      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-      font-weight: 700;
+    .work-box:hover {
+      max-width: 320px;
+      box-shadow: 0 36px 120px rgba(0, 0, 0, 0.18);
+      transform: none;
+      z-index: 12;
     }
-
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      background-image: url("images/sliceanimatedream6verynice.png");
-      background-repeat: no-repeat;
-      background-position: center center;
-      background-size: 55%;
-      background-color: #f2f2f2;
-      z-index: -1;
-      transition: filter 320ms ease, opacity 320ms ease, transform 320ms ease;
-      transform-origin: center center;
     }
 
     body.image-hover::before {
