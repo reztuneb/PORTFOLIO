@@ -33,7 +33,12 @@
       background-size: 55%;
       background-color: #f2f2f2;
       z-index: -1;
-      transition: filter 320ms ease, opacity 320ms ease;
+      transition: filter 320ms ease, opacity 320ms ease, transform 320ms ease;
+      transform-origin: center center;
+    }
+
+    body.image-hover::before {
+      transform: scale(1.06);
     }
 
     body.work-open::before,
@@ -280,6 +285,21 @@
       workButton.classList.remove('active');
       body.classList.toggle('about-open', active);
       body.classList.remove('work-open');
+    });
+
+    document.addEventListener('mousemove', event => {
+      const centerX = window.innerWidth / 2;
+      const centerY = window.innerHeight / 2;
+      const dx = event.clientX - centerX;
+      const dy = event.clientY - centerY;
+      const distance = Math.sqrt(dx * dx + dy * dy);
+      const threshold = Math.min(window.innerWidth, window.innerHeight) * 0.24;
+
+      if (distance < threshold) {
+        body.classList.add('image-hover');
+      } else {
+        body.classList.remove('image-hover');
+      }
     });
   </script>
 </body>
