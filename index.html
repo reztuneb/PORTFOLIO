@@ -16,33 +16,51 @@
     body {
       margin: 0;
       min-height: 100vh;
-      display: flex;
-      align-items: flex-start;
-      justify-content: flex-start;
-      padding: 3rem 4rem 4rem;
+      overflow: hidden;
       background-color: #f2f2f2;
       color: #000000;
       font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
       font-weight: 700;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
       background-image: url("images/sliceanimatedream6verynice.png");
       background-repeat: no-repeat;
       background-position: center center;
-      background-size: 38%;
+      background-size: 55%;
+      background-color: #f2f2f2;
+      z-index: -1;
+      transition: filter 320ms ease, opacity 320ms ease;
+    }
+
+    body.work-open::before,
+    body.about-open::before {
+      filter: blur(10px);
+    }
+
+    .container {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    .page {
+      padding: 3rem 4rem 4rem;
+      width: min(360px, 34vw);
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      z-index: 1;
     }
 
     h1 {
-      font-size: clamp(1.8rem, 3.4vw, 2.2rem);
+      font-size: clamp(1.7rem, 3vw, 2rem);
       margin: 0;
       letter-spacing: 0.08em;
       color: #000000;
       text-transform: uppercase;
-      text-shadow: none;
-    }
-
-    .page {
-      max-width: min(100%, 680px);
-      width: 100%;
-      text-align: left;
     }
 
     .links {
@@ -59,7 +77,7 @@
       padding: 0;
       cursor: pointer;
       font-weight: 800;
-      font-size: clamp(1rem, 1.4vw, 1.05rem);
+      font-size: clamp(0.95rem, 1.3vw, 1rem);
       text-transform: uppercase;
       transition: transform 180ms ease, color 180ms ease;
       position: relative;
@@ -78,84 +96,190 @@
       width: 100%;
       height: 3px;
       background: #000000;
-      border-radius: 1px;
+      border-radius: 2px;
     }
 
-    .work-panel {
-      position: fixed;
-      top: 50%;
-      right: 4rem;
-      transform: translateY(-50%) translateX(30px);
-      display: grid;
-      gap: 1.2rem;
+    .panel-shell {
+      position: relative;
+      flex: 1;
+      overflow: hidden;
+      min-height: 100vh;
+    }
+
+    .panel {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 380px;
+      padding: 3rem 4rem 4rem;
       opacity: 0;
+      transform: translateX(40px);
       pointer-events: none;
-      transition: opacity 280ms ease, transform 280ms ease;
-      z-index: 2;
+      transition: opacity 320ms ease, transform 320ms ease;
+      overflow-y: auto;
+      overscroll-behavior: contain;
     }
 
-    body.work-open .work-panel {
+    body.work-open .work-panel,
+    body.about-open .about-panel {
       opacity: 1;
-      transform: translateY(-50%) translateX(0);
+      transform: translateX(0);
       pointer-events: auto;
     }
 
+    .work-panel {
+      display: grid;
+      gap: 2.5rem;
+      align-content: start;
+      width: 100%;
+      padding-right: 2rem;
+    }
+
     .work-box {
-      min-width: 220px;
-      min-height: 130px;
-      background: #ffffff;
-      border-radius: 30px;
-      box-shadow: 0 28px 70px rgba(0, 0, 0, 0.08);
+      min-height: 52vh;
+      width: 100%;
+      border-radius: 12px;
+      background: #f8f8f7;
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.06);
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 1.25rem;
       color: #000000;
       font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      opacity: 0.98;
+      padding: 2rem;
       transition: transform 280ms ease;
     }
 
-    .work-box.small {
-      min-height: 100px;
+    .work-box:nth-child(1) { background: hsl(20, 8%, 95%); }
+    .work-box:nth-child(2) { background: hsl(25, 6%, 95.5%); }
+    .work-box:nth-child(3) { background: hsl(190, 6%, 95.8%); }
+    .work-box:nth-child(4) { background: hsl(35, 7%, 95%); }
+    .work-box:nth-child(5) { background: hsl(210, 5%, 95.8%); }
+    .work-box:nth-child(6) { background: hsl(15, 8%, 95.2%); }
+    .work-box:nth-child(7) { background: hsl(170, 6%, 95.3%); }
+    .work-box:nth-child(8) { background: hsl(340, 5%, 95.4%); }
+    .work-box:nth-child(9) { background: hsl(205, 7%, 95.2%); }
+    .work-box:nth-child(10) { background: hsl(40, 6%, 95.3%); }
+    .work-box:nth-child(11) { background: hsl(15, 5%, 95.9%); }
+    .work-box:nth-child(12) { background: hsl(195, 6%, 95.1%); }
+    .work-box:nth-child(13) { background: hsl(25, 5%, 95.1%); }
+    .work-box:nth-child(14) { background: hsl(170, 4%, 95.7%); }
+    .work-box:nth-child(15) { background: hsl(5, 7%, 95.2%); }
+    .work-box:nth-child(16) { background: hsl(225, 5%, 95.4%); }
+    .work-box:nth-child(17) { background: hsl(30, 6%, 95.1%); }
+    .work-box:nth-child(18) { background: hsl(190, 7%, 95.4%); }
+    .work-box:nth-child(19) { background: hsl(10, 8%, 94.6%); }
+    .work-box:nth-child(20) { background: hsl(220, 5%, 95.3%); }
+
+    .about-panel {
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      width: 100%;
     }
 
-    body.work-open .work-box {
-      transform: translateX(0);
+    .about-card {
+      width: min(560px, 55%);
+      background: rgba(255, 255, 255, 0.98);
+      border-radius: 18px;
+      box-shadow: 0 32px 90px rgba(0, 0, 0, 0.08);
+      padding: 3rem;
+      display: grid;
+      gap: 1.75rem;
     }
 
-    .page-container {
-      position: relative;
-      z-index: 1;
+    .about-hero {
+      min-height: 42vh;
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.04);
+    }
+
+    .about-photo {
+      min-height: 18vh;
+      width: 100%;
+      background: #ffffff;
+      border-radius: 14px;
+      box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.04);
+    }
+
+    .panel::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    .panel::-webkit-scrollbar-thumb {
+      background: rgba(0, 0, 0, 0.12);
+      border-radius: 999px;
+    }
+
+    .panel::-webkit-scrollbar-track {
+      background: transparent;
     }
   </style>
 </head>
 <body>
-  <div class="page-container">
+  <div class="container">
     <div class="page">
       <h1>LAURENZ WEEKE</h1>
       <div class="links">
         <button class="link-button" type="button" id="workButton">WORK</button>
-        <button class="link-button" type="button">ABOUT</button>
+        <button class="link-button" type="button" id="aboutButton">ABOUT</button>
+      </div>
+    </div>
+
+    <div class="panel-shell">
+      <div class="panel work-panel" id="workPanel">
+        <div class="work-box">PROJECT ONE</div>
+        <div class="work-box">PROJECT TWO</div>
+        <div class="work-box">PROJECT THREE</div>
+        <div class="work-box">PROJECT FOUR</div>
+        <div class="work-box">PROJECT FIVE</div>
+        <div class="work-box">PROJECT SIX</div>
+        <div class="work-box">PROJECT SEVEN</div>
+        <div class="work-box">PROJECT EIGHT</div>
+        <div class="work-box">PROJECT NINE</div>
+        <div class="work-box">PROJECT TEN</div>
+        <div class="work-box">PROJECT ELEVEN</div>
+        <div class="work-box">PROJECT TWELVE</div>
+        <div class="work-box">PROJECT THIRTEEN</div>
+        <div class="work-box">PROJECT FOURTEEN</div>
+        <div class="work-box">PROJECT FIFTEEN</div>
+        <div class="work-box">PROJECT SIXTEEN</div>
+        <div class="work-box">PROJECT SEVENTEEN</div>
+        <div class="work-box">PROJECT EIGHTEEN</div>
+        <div class="work-box">PROJECT NINETEEN</div>
+        <div class="work-box">PROJECT TWENTY</div>
+      </div>
+
+      <div class="panel about-panel" id="aboutPanel">
+        <div class="about-card">
+          <div class="about-hero"></div>
+          <div class="about-photo"></div>
+        </div>
       </div>
     </div>
   </div>
 
-  <div class="work-panel" id="workPanel">
-    <div class="work-box">PROJECT ONE</div>
-    <div class="work-box small">PROJECT TWO</div>
-    <div class="work-box small">PROJECT THREE</div>
-  </div>
-
   <script>
     const workButton = document.getElementById('workButton');
+    const aboutButton = document.getElementById('aboutButton');
     const body = document.body;
 
     workButton.addEventListener('click', () => {
       const active = workButton.classList.toggle('active');
+      aboutButton.classList.remove('active');
       body.classList.toggle('work-open', active);
+      body.classList.remove('about-open');
+    });
+
+    aboutButton.addEventListener('click', () => {
+      const active = aboutButton.classList.toggle('active');
+      workButton.classList.remove('active');
+      body.classList.toggle('about-open', active);
+      body.classList.remove('work-open');
     });
   </script>
 </body>
