@@ -301,6 +301,77 @@
 
     loadGalleryImages();
 
+    function setupProximityHover() {
+      const workPanel = document.getElementById('workPanel');
+      const boxes = Array.from(workPanel.querySelectorAll('.work-box'));
+      const k = 10; // number of neighbors to affect
+      const maxScale = 2; // hovered image scale
+      const minNeighborScale = 1.03; // smallest visible neighbor scale
+      const exponent = 1.25; // falloff shaping
+
+      function applyProximity(target) {
+        const rects = boxes.map(b => b.getBoundingClientRect());
+        const tRect = target.getBoundingClientRect();
+        const tCx = tRect.left + tRect.width / 2;
+        const tCy = tRect.top + tRect.height / 2;
+
+        const distances = boxes.map((b, i) => {
+          const r = rects[i];
+          const cx = r.left + r.width / 2;
+          const cy = r.top + r.height / 2;
+          const d = Math.hypot(cx - tCx, cy - tCy);
+          return {b, d, i};
+        });
+
+        distances.sort((a, b) => a.d - b.d);
+
+        distances.forEach((entry, rank) => {
+          const el = entry.b;
+          if (rank === 0) {
+            el.style.transform = `scale(${maxScale})`;
+            el.style.zIndex = 60;
+            el.style.boxShadow = '0 60px 180px rgba(0,0,0,0.28)';
+          } else if (rank <= k) {
+            const t = 1 - (rank / (k + 1));
+            const scale = 1 + (maxScale - 1) * Math.pow(t, exponent);
+            const finalScale = Math.max(scale, minNeighborScale);
+            el.style.transform = `scale(${finalScale})`;
+            el.style.zIndex = 50 - rank;
+            el.style.boxShadow = '0 40px 120px rgba(0,0,0,0.18)';
+          } else {
+            el.style.transform = '';
+            el.style.zIndex = '';
+            el.style.boxShadow = '';
+          }
+        });
+      }
+
+      function resetProximity() {
+        boxes.forEach(b => {
+          b.style.transform = '';
+          b.style.zIndex = '';
+          b.style.boxShadow = '';
+        });
+      }
+
+      boxes.forEach(box => {
+        box.addEventListener('mouseenter', () => applyProximity(box));
+        box.addEventListener('mouseleave', () => resetProximity());
+      });
+
+      workPanel.addEventListener('mouseleave', () => resetProximity());
+      // Recompute on window resize to keep rects accurate
+      window.addEventListener('resize', () => resetProximity());
+    }
+
+    // call setup after images are loaded into the panel
+    // images are appended synchronously in loadGalleryImages then this runs
+    // use a small timeout to ensure layout has settled
+    setTimeout(() => {
+      const wp = document.getElementById('workPanel');
+      if (wp && wp.querySelectorAll('.work-box').length) setupProximityHover();
+    }, 120);
+
     // lightbox removed; no overlay event handlers
 
     document.addEventListener('mousemove', event => {
