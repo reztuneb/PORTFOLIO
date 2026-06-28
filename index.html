@@ -31,7 +31,7 @@
     }
 
     h1 {
-      font-size: clamp(2rem, 3.5vw, 2.4rem);
+      font-size: clamp(1.8rem, 3.4vw, 2.2rem);
       margin: 0;
       letter-spacing: 0.08em;
       color: #000000;
@@ -43,15 +43,6 @@
       max-width: min(100%, 680px);
       width: 100%;
       text-align: left;
-    }
-
-    h1 {
-      font-size: clamp(2.8rem, 5vw, 4rem);
-      margin: 0;
-      letter-spacing: 0.08em;
-      color: #000000;
-      text-transform: uppercase;
-      text-shadow: none;
     }
 
     .links {
@@ -68,24 +59,104 @@
       padding: 0;
       cursor: pointer;
       font-weight: 800;
-      font-size: clamp(1rem, 1.5vw, 1.1rem);
+      font-size: clamp(1rem, 1.4vw, 1.05rem);
       text-transform: uppercase;
       transition: transform 180ms ease, color 180ms ease;
+      position: relative;
     }
 
     .link-button:hover {
       transform: scale(1.08);
       color: #111111;
     }
+
+    .link-button.active::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -4px;
+      width: 100%;
+      height: 3px;
+      background: #000000;
+      border-radius: 1px;
+    }
+
+    .work-panel {
+      position: fixed;
+      top: 50%;
+      right: 4rem;
+      transform: translateY(-50%) translateX(30px);
+      display: grid;
+      gap: 1.2rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 280ms ease, transform 280ms ease;
+      z-index: 2;
+    }
+
+    body.work-open .work-panel {
+      opacity: 1;
+      transform: translateY(-50%) translateX(0);
+      pointer-events: auto;
+    }
+
+    .work-box {
+      min-width: 220px;
+      min-height: 130px;
+      background: #ffffff;
+      border-radius: 30px;
+      box-shadow: 0 28px 70px rgba(0, 0, 0, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.25rem;
+      color: #000000;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      opacity: 0.98;
+      transition: transform 280ms ease;
+    }
+
+    .work-box.small {
+      min-height: 100px;
+    }
+
+    body.work-open .work-box {
+      transform: translateX(0);
+    }
+
+    .page-container {
+      position: relative;
+      z-index: 1;
+    }
   </style>
 </head>
 <body>
-  <div class="page">
-    <h1>LAURENZ WEEKE</h1>
-    <div class="links">
-      <button class="link-button" type="button">WORK</button>
-      <button class="link-button" type="button">ABOUT</button>
+  <div class="page-container">
+    <div class="page">
+      <h1>LAURENZ WEEKE</h1>
+      <div class="links">
+        <button class="link-button" type="button" id="workButton">WORK</button>
+        <button class="link-button" type="button">ABOUT</button>
+      </div>
     </div>
   </div>
+
+  <div class="work-panel" id="workPanel">
+    <div class="work-box">PROJECT ONE</div>
+    <div class="work-box small">PROJECT TWO</div>
+    <div class="work-box small">PROJECT THREE</div>
+  </div>
+
+  <script>
+    const workButton = document.getElementById('workButton');
+    const body = document.body;
+
+    workButton.addEventListener('click', () => {
+      const active = workButton.classList.toggle('active');
+      body.classList.toggle('work-open', active);
+    });
+  </script>
 </body>
 </html>
