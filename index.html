@@ -304,7 +304,7 @@
     function setupProximityHover() {
       const workPanel = document.getElementById('workPanel');
       const boxes = Array.from(workPanel.querySelectorAll('.work-box'));
-      const k = 10; // number of neighbors to affect
+      const k = 22; // number of neighbors to affect (increased to affect a larger area)
       const maxScale = 2; // hovered image scale
       const minNeighborScale = 1.03; // smallest visible neighbor scale
       const exponent = 1.25; // falloff shaping
