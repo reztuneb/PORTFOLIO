@@ -137,13 +137,13 @@
 
     .work-panel {
       display: grid;
-      grid-template-columns: repeat(3, minmax(420px, 1fr));
-      gap: 3.5rem;
+      grid-template-columns: repeat(6, minmax(220px, 1fr));
+      gap: 1.75rem;
       align-content: start;
       justify-content: center;
       justify-items: center;
-      width: min(100%, 1740px);
-      max-width: 1740px;
+      width: min(100%, 1700px);
+      max-width: 1700px;
       padding-right: 4rem;
       margin: 0 auto;
       transform: none;
@@ -151,7 +151,7 @@
 
     .work-box {
       width: 100%;
-      max-width: 520px;
+      max-width: 260px;
       aspect-ratio: 1 / 1;
       border-radius: 16px;
       box-shadow: 0 30px 100px rgba(0, 0, 0, 0.12);
@@ -233,26 +233,7 @@
     </div>
 
       <div class="panel-shell">
-      <div class="panel work-panel" id="workPanel">
-        <div class="work-box"><img src="images/MARBLE_WORLDS/blurred_world.webp" alt="Marble Worlds image"></div>
-        <div class="work-box"><img src="images/MARBLE_WORLDS/blurred_world_2.webp" alt="Marble Worlds image"></div>
-        <div class="work-box"><img src="images/MARBLE_WORLDS/clothworld1.webp" alt="Marble Worlds image"></div>
-        <div class="work-box"><img src="images/MARBLE_WORLDS/clothworld2.webp" alt="Marble Worlds image"></div>
-        <div class="work-box"><img src="images/MARBLE_WORLDS/cube_WORLD_1.webp" alt="Marble Worlds image"></div>
-        <div class="work-box"><img src="images/MARBLE_WORLDS/itsbeenawile.webp" alt="Marble Worlds image"></div>
-        <div class="work-box"><img src="images/MARBLE_WORLDS/marbleworld.webp" alt="Marble Worlds image"></div>
-        <div class="work-box"><img src="images/MARBLE_WORLDS/marbleworld3.webp" alt="Marble Worlds image"></div>
-        <div class="work-box"><img src="images/MARBLE_WORLDS/marbleworld4.webp" alt="Marble Worlds image"></div>
-        <div class="work-box"><img src="images/MARBLE_WORLDS/marbleworld5.webp" alt="Marble Worlds image"></div>
-        <div class="work-box"><img src="images/MARBLE_WORLDS/marbleworld6.webp" alt="Marble Worlds image"></div>
-        <div class="work-box"><img src="images/MARBLE_WORLDS/marbleworld7.webp" alt="Marble Worlds image"></div>
-        <div class="work-box"><img src="images/MARBLE_WORLDS/random298982.webp" alt="Marble Worlds image"></div>
-        <div class="work-box"><img src="images/MARBLE_WORLDS/transparenttriangle_test.webp" alt="Marble Worlds image"></div>
-        <div class="work-box"><img src="images/MARBLE_WORLDS/triangle_111.webp" alt="Marble Worlds image"></div>
-        <div class="work-box"><img src="images/MARBLE_WORLDS/triangle_222.webp" alt="Marble Worlds image"></div>
-        <div class="work-box"><img src="images/MARBLE_WORLDS/triangletest.webp" alt="Marble Worlds image"></div>
-        <div class="work-box"><img src="images/MARBLE_WORLDS/zerofocus_world.webp" alt="Marble Worlds image"></div>
-      </div>
+      <div class="panel work-panel" id="workPanel"></div>
 
       <div class="panel about-panel" id="aboutPanel">
         <div class="about-card">
@@ -281,6 +262,37 @@
       body.classList.toggle('about-open', active);
       body.classList.remove('work-open');
     });
+
+    function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+    }
+
+    function loadGalleryImages() {
+      fetch('images/gallery.json')
+        .then(response => response.json())
+        .then(filenames => {
+          shuffleArray(filenames);
+          const workPanel = document.getElementById('workPanel');
+          filenames.forEach(name => {
+            const box = document.createElement('div');
+            box.className = 'work-box';
+            const img = document.createElement('img');
+            img.src = encodeURI(`images/Gallery/${name}`);
+            img.alt = name;
+            box.appendChild(img);
+            workPanel.appendChild(box);
+          });
+        })
+        .catch(() => {
+          const workPanel = document.getElementById('workPanel');
+          workPanel.textContent = 'Unable to load gallery images.';
+        });
+    }
+
+    loadGalleryImages();
 
     document.addEventListener('mousemove', event => {
       // don't enlarge the background image while a panel is open
