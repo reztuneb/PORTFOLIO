@@ -116,8 +116,8 @@
       top: 0;
       right: 0;
       bottom: 0;
-      left: 380px;
-      padding: 3rem 4rem 4rem;
+      left: 360px;
+      padding: 3rem 6rem 4rem 4rem;
       opacity: 0;
       transform: translateX(40px);
       pointer-events: none;
@@ -135,59 +135,65 @@
 
     .work-panel {
       display: grid;
+      grid-template-columns: repeat(3, 220px);
       gap: 2.5rem;
       align-content: start;
+      justify-content: center;
+      justify-items: center;
       width: 100%;
-      padding-right: 2rem;
+      max-width: calc(3 * 220px + 2 * 2.5rem);
+      padding-right: 7rem;
+      transform: translateX(clamp(-120px, -6vw, 0px));
     }
 
     .work-box {
-      min-height: 52vh;
-      width: 100%;
-      border-radius: 12px;
-      background: #f8f8f7;
-      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.06);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #000000;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      padding: 2rem;
-      transition: transform 280ms ease;
+      width: 220px;
+      aspect-ratio: 1 / 1;
+      border-radius: 10px;
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.08);
+      background-clip: padding-box;
+      padding: 0;
+      transition: transform 280ms ease, box-shadow 280ms ease;
     }
 
-    .work-box:nth-child(1) { background: hsl(20, 8%, 95%); }
-    .work-box:nth-child(2) { background: hsl(25, 6%, 95.5%); }
-    .work-box:nth-child(3) { background: hsl(190, 6%, 95.8%); }
-    .work-box:nth-child(4) { background: hsl(35, 7%, 95%); }
-    .work-box:nth-child(5) { background: hsl(210, 5%, 95.8%); }
-    .work-box:nth-child(6) { background: hsl(15, 8%, 95.2%); }
-    .work-box:nth-child(7) { background: hsl(170, 6%, 95.3%); }
-    .work-box:nth-child(8) { background: hsl(340, 5%, 95.4%); }
-    .work-box:nth-child(9) { background: hsl(205, 7%, 95.2%); }
-    .work-box:nth-child(10) { background: hsl(40, 6%, 95.3%); }
-    .work-box:nth-child(11) { background: hsl(15, 5%, 95.9%); }
-    .work-box:nth-child(12) { background: hsl(195, 6%, 95.1%); }
-    .work-box:nth-child(13) { background: hsl(25, 5%, 95.1%); }
-    .work-box:nth-child(14) { background: hsl(170, 4%, 95.7%); }
-    .work-box:nth-child(15) { background: hsl(5, 7%, 95.2%); }
-    .work-box:nth-child(16) { background: hsl(225, 5%, 95.4%); }
-    .work-box:nth-child(17) { background: hsl(30, 6%, 95.1%); }
-    .work-box:nth-child(18) { background: hsl(190, 7%, 95.4%); }
-    .work-box:nth-child(19) { background: hsl(10, 8%, 94.6%); }
-    .work-box:nth-child(20) { background: hsl(220, 5%, 95.3%); }
+    .work-box:hover {
+      transform: scale(1.04);
+      box-shadow: 0 40px 120px rgba(0, 0, 0, 0.14);
+    }
+
+    .work-box:nth-child(1) { background: hsl(20, 50%, 92%); }
+    .work-box:nth-child(2) { background: hsl(25, 48%, 92.5%); }
+    .work-box:nth-child(3) { background: hsl(190, 42%, 93%); }
+    .work-box:nth-child(4) { background: hsl(35, 46%, 92.5%); }
+    .work-box:nth-child(5) { background: hsl(210, 44%, 93%); }
+    .work-box:nth-child(6) { background: hsl(15, 52%, 92.2%); }
+    .work-box:nth-child(7) { background: hsl(170, 43%, 92.4%); }
+    .work-box:nth-child(8) { background: hsl(340, 40%, 92.5%); }
+    .work-box:nth-child(9) { background: hsl(205, 47%, 92.3%); }
+    .work-box:nth-child(10) { background: hsl(40, 45%, 92.5%); }
+    .work-box:nth-child(11) { background: hsl(15, 41%, 93%); }
+    .work-box:nth-child(12) { background: hsl(195, 44%, 92.6%); }
+    .work-box:nth-child(13) { background: hsl(25, 43%, 92.4%); }
+    .work-box:nth-child(14) { background: hsl(170, 38%, 92.7%); }
+    .work-box:nth-child(15) { background: hsl(5, 46%, 92.5%); }
+    .work-box:nth-child(16) { background: hsl(225, 42%, 92.6%); }
+    .work-box:nth-child(17) { background: hsl(30, 45%, 92.4%); }
+    .work-box:nth-child(18) { background: hsl(190, 47%, 92.6%); }
+    .work-box:nth-child(19) { background: hsl(10, 50%, 92.1%); }
+    .work-box:nth-child(20) { background: hsl(220, 43%, 92.5%); }
 
     .about-panel {
       display: flex;
-      align-items: flex-start;
+      align-items: center;
       justify-content: center;
       width: 100%;
+      padding-top: 6rem;
     }
 
     .about-card {
-      width: min(560px, 55%);
+      width: min(920px, 85%);
+      max-width: 980px;
+      margin: 0 auto;
       background: rgba(255, 255, 255, 0.98);
       border-radius: 18px;
       box-shadow: 0 32px 90px rgba(0, 0, 0, 0.08);
@@ -230,33 +236,33 @@
     <div class="page">
       <h1>LAURENZ WEEKE</h1>
       <div class="links">
-        <button class="link-button" type="button" id="workButton">WORK</button>
+        <button class="link-button" type="button" id="workButton">GALLERY</button>
         <button class="link-button" type="button" id="aboutButton">ABOUT</button>
       </div>
     </div>
 
-    <div class="panel-shell">
+      <div class="panel-shell">
       <div class="panel work-panel" id="workPanel">
-        <div class="work-box">PROJECT ONE</div>
-        <div class="work-box">PROJECT TWO</div>
-        <div class="work-box">PROJECT THREE</div>
-        <div class="work-box">PROJECT FOUR</div>
-        <div class="work-box">PROJECT FIVE</div>
-        <div class="work-box">PROJECT SIX</div>
-        <div class="work-box">PROJECT SEVEN</div>
-        <div class="work-box">PROJECT EIGHT</div>
-        <div class="work-box">PROJECT NINE</div>
-        <div class="work-box">PROJECT TEN</div>
-        <div class="work-box">PROJECT ELEVEN</div>
-        <div class="work-box">PROJECT TWELVE</div>
-        <div class="work-box">PROJECT THIRTEEN</div>
-        <div class="work-box">PROJECT FOURTEEN</div>
-        <div class="work-box">PROJECT FIFTEEN</div>
-        <div class="work-box">PROJECT SIXTEEN</div>
-        <div class="work-box">PROJECT SEVENTEEN</div>
-        <div class="work-box">PROJECT EIGHTEEN</div>
-        <div class="work-box">PROJECT NINETEEN</div>
-        <div class="work-box">PROJECT TWENTY</div>
+        <div class="work-box"></div>
+        <div class="work-box"></div>
+        <div class="work-box"></div>
+        <div class="work-box"></div>
+        <div class="work-box"></div>
+        <div class="work-box"></div>
+        <div class="work-box"></div>
+        <div class="work-box"></div>
+        <div class="work-box"></div>
+        <div class="work-box"></div>
+        <div class="work-box"></div>
+        <div class="work-box"></div>
+        <div class="work-box"></div>
+        <div class="work-box"></div>
+        <div class="work-box"></div>
+        <div class="work-box"></div>
+        <div class="work-box"></div>
+        <div class="work-box"></div>
+        <div class="work-box"></div>
+        <div class="work-box"></div>
       </div>
 
       <div class="panel about-panel" id="aboutPanel">
@@ -288,6 +294,12 @@
     });
 
     document.addEventListener('mousemove', event => {
+      // don't enlarge the background image while a panel is open
+      if (body.classList.contains('work-open') || body.classList.contains('about-open')) {
+        body.classList.remove('image-hover');
+        return;
+      }
+
       const centerX = window.innerWidth / 2;
       const centerY = window.innerHeight / 2;
       const dx = event.clientX - centerX;
