@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>LAURENZ WEEKE</title>
+  <link rel="icon" type="image/png" href="images/sliceanimatedream6verynice.png">
+  <link rel="shortcut icon" type="image/png" href="images/sliceanimatedream6verynice.png">
   <style>
     :root {
       color-scheme: light;
@@ -135,22 +137,24 @@
 
     .work-panel {
       display: grid;
-      grid-template-columns: repeat(3, 220px);
-      gap: 2.5rem;
+      grid-template-columns: repeat(3, minmax(420px, 1fr));
+      gap: 3.5rem;
       align-content: start;
       justify-content: center;
       justify-items: center;
-      width: 100%;
-      max-width: calc(3 * 220px + 2 * 2.5rem);
-      padding-right: 7rem;
-      transform: translateX(clamp(-120px, -6vw, 0px));
+      width: min(100%, 1740px);
+      max-width: 1740px;
+      padding-right: 4rem;
+      margin: 0 auto;
+      transform: none;
     }
 
     .work-box {
-      width: 220px;
+      width: 100%;
+      max-width: 520px;
       aspect-ratio: 1 / 1;
-      border-radius: 10px;
-      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.08);
+      border-radius: 16px;
+      box-shadow: 0 30px 100px rgba(0, 0, 0, 0.12);
       background-clip: padding-box;
       padding: 0;
       transition: transform 280ms ease, box-shadow 280ms ease;
