@@ -156,8 +156,8 @@
     }
 
     .work-box:hover {
-      transform: scale(2);
-      box-shadow: 0 60px 180px rgba(0, 0, 0, 0.24);
+      /* remove direct hover scaling; proximity logic controls scale now */
+      box-shadow: 0 40px 120px rgba(0, 0, 0, 0.18);
       z-index: 50;
     }
 
@@ -311,36 +311,43 @@
       if (!boxes.length) return;
 
       const maxScale = 2; // hovered image scale
-      const radius = Math.max(window.innerWidth, window.innerHeight) * 0.9; // influence radius
+      const radius = Math.max(window.innerWidth, window.innerHeight) * 0.45; // halved influence radius
       const power = 1.6; // falloff shaping
 
       let mouse = {x: -9999, y: -9999};
       let raf = null;
+      const current = new WeakMap();
 
       function updateBoxes() {
         boxes = Array.from(workPanel.querySelectorAll('.work-box'));
+        boxes.forEach(b => { if (!current.has(b)) current.set(b, 1); });
       }
 
       function render() {
         raf = null;
-        const now = performance.now();
+        let anyActive = false;
         boxes.forEach((b, i) => {
           const r = b.getBoundingClientRect();
           const cx = r.left + r.width / 2;
           const cy = r.top + r.height / 2;
           const d = Math.hypot(cx - mouse.x, cy - mouse.y);
           const n = Math.max(0, 1 - d / radius);
-          const s = 1 + (maxScale - 1) * Math.pow(n, power);
-          if (n > 0.01) {
-            b.style.transform = `scale(${s})`;
+          const target = 1 + (maxScale - 1) * Math.pow(n, power);
+          const cur = current.get(b) || 1;
+          const next = cur + (target - cur) * 0.16; // lerp smoothing
+          current.set(b, next);
+          if (Math.abs(next - 1) > 0.002) anyActive = true;
+          b.style.transform = `scale(${next})`;
+          if (n > 0.02) {
             b.style.zIndex = Math.floor(100 * n) + 10;
             b.style.boxShadow = '0 40px 120px rgba(0,0,0,0.18)';
           } else {
-            b.style.transform = '';
             b.style.zIndex = '';
             b.style.boxShadow = '';
           }
         });
+        // if there's still active animation, keep rAF looping
+        if (anyActive && !raf) raf = requestAnimationFrame(render);
       }
 
       function onMove(e) {
@@ -351,7 +358,8 @@
 
       function reset() {
         mouse.x = -9999; mouse.y = -9999;
-        boxes.forEach(b => { b.style.transform = ''; b.style.zIndex = ''; b.style.boxShadow = ''; });
+        boxes.forEach(b => { current.set(b, 1); b.style.zIndex = ''; b.style.boxShadow = ''; });
+        if (!raf) raf = requestAnimationFrame(render);
       }
 
       workPanel.addEventListener('mousemove', onMove);
