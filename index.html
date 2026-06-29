@@ -35,8 +35,6 @@
     }
 
     body.image-hover::before { transform: scale(1.06); }
-    body.work-open::before, body.about-open::before { filter: blur(10px); }
-
     body.work-open::before,
     body.about-open::before {
       filter: blur(10px);
@@ -229,6 +227,7 @@
       cursor: pointer;
       transition: transform 220ms cubic-bezier(.2,.9,.2,1), box-shadow 200ms ease;
       transform-origin: center center;
+      will-change: transform, box-shadow;
     }
 
     .work-box:hover {
@@ -246,6 +245,8 @@
       filter: blur(12px);
       -webkit-filter: blur(12px);
       transition: filter 180ms ease, -webkit-filter 180ms ease;
+      transform: translateZ(0);
+      will-change: filter;
     }
 
     .about-panel {
@@ -383,30 +384,49 @@
     // lightbox removed - click-to-enlarge disabled
 
     function loadGalleryImages() {
+      const workPanel = document.getElementById('workPanel');
+      const optimizedBase = 'images/Gallery/optimized/';
+      const fallbackBase = 'images/Gallery/';
+
       fetch('images/gallery.json')
         .then(response => response.json())
         .then(filenames => {
-          // create a larger pool by repeating each image several times
-          const copies = 4;
+          const copies = 2;
           let pool = [];
           for (let i = 0; i < copies; i++) pool = pool.concat(filenames);
           shuffleArray(pool);
-          const workPanel = document.getElementById('workPanel');
+
+          const fragment = document.createDocumentFragment();
           pool.forEach(name => {
             const box = document.createElement('div');
             box.className = 'work-box';
             const img = document.createElement('img');
-            img.src = 'images/Gallery/' + encodeURIComponent(name);
+            const optimizedSrc = optimizedBase + encodeURIComponent(name);
+            const fallbackSrc = fallbackBase + encodeURIComponent(name);
+
+            img.src = optimizedSrc;
             img.alt = '';
             img.title = '';
             img.loading = 'lazy';
+            img.decoding = 'async';
             img.draggable = false;
+            img.width = 160;
+            img.height = 160;
+            img.onerror = () => {
+              if (img.src !== fallbackSrc) {
+                img.onerror = null;
+                img.src = fallbackSrc;
+              }
+            };
+
             box.appendChild(img);
-            workPanel.appendChild(box);
+            fragment.appendChild(box);
           });
+
+          workPanel.appendChild(fragment);
+          requestAnimationFrame(() => setupProximityHover());
         })
         .catch(() => {
-          const workPanel = document.getElementById('workPanel');
           workPanel.textContent = 'Unable to load gallery images.';
         });
     }
@@ -418,10 +438,10 @@
       let boxes = Array.from(workPanel.querySelectorAll('.work-box'));
       if (!boxes.length) return;
 
-      const k = 10; // number of neighbors to affect (smaller neighborhood)
-      const maxScale = 2; // hovered image scale
-      const minNeighborScale = 1.03; // smallest visible neighbor scale
-      const exponent = 1.25; // falloff shaping
+      const k = 10;
+      const maxScale = 2;
+      const minNeighborScale = 1.03;
+      const exponent = 1.25;
 
       function applyProximity(target) {
         const rects = boxes.map(b => b.getBoundingClientRect());
@@ -474,15 +494,11 @@
       });
 
       workPanel.addEventListener('mouseleave', () => resetProximity());
-      // Recompute on window resize to keep rects accurate
-      window.addEventListener('resize', () => { boxes = Array.from(workPanel.querySelectorAll('.work-box')); resetProximity(); });
+      window.addEventListener('resize', () => {
+        boxes = Array.from(workPanel.querySelectorAll('.work-box'));
+        resetProximity();
+      });
     }
-
-    // call setup after images are loaded into the panel
-    setTimeout(() => {
-      const wp = document.getElementById('workPanel');
-      if (wp && wp.querySelectorAll('.work-box').length) setupProximityHover();
-    }, 180);
 
     // lightbox removed; no overlay event handlers
 
